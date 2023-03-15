@@ -23,17 +23,7 @@ class BlogPostController extends Controller
    
     public function store(Request $request)
     {
-        //dd($request->all());
-        //store a new post
-        /*$newPost = BlogPost::create([
-            'title' => $request->title,
-            'body' => $request->body,
-            'image' => $request->image,
-            'user_id' => 1
-        ]);
-
-        return redirect('/blog');*/
-
+        
         $newPost = BlogPost::create([
             'title' => $request->title,
             'body' => $request->body,
@@ -101,14 +91,10 @@ class BlogPostController extends Controller
             ], 409);  
         }
 
-        $image = $request->file('image');
-
-        $path = $image->storeAs('public/image', $image->getClientOriginalName());
-
         $post = BlogPost::create([
             'title' => $request->title,
             'body' => $request->body,
-            'image'=> $path,
+            'image' => $request->image,
         
             'user_id' => 1
         ]);
@@ -119,7 +105,7 @@ class BlogPostController extends Controller
         ]);
     }
 
-    public function apishow(BlogPost $blogPost)
+    public function apishow($id)
     {
         //show a blog post
         $post = BlogPost::find($id);
@@ -135,46 +121,28 @@ class BlogPostController extends Controller
         ]);
     }
     
-    public function apiupdate(Request $request, BlogPost $blogPost)
+    public function apiupdate(Request $request, $id)
     {
-        $post = BlogPost::find($id);
+        $post = BlogPost::findOrFail($id);
 
-        if (!$post) {
-            return response()->json([
-                'message' => 'Post not found'
-            ], 404);
-        }
+        $post->update($request->all());
 
-        $post->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'image' => $request->image,
-            'body' => $request->body,
-            'user_id' => $request->user_id
-        ]);
-
-        return response()->json([
-            'message' => 'Post updated successfully',
-            'data' => $post
-        ]);
+        return response()->json($post, 200);
     }
 
     
-    public function apidestroy(BlogPost $blogPost)
+    public function apidestroy($id)
     {
-        $post = BlogPost::find($title);
-
+        $post = BlogPost::find($id);
+    
         if (!$post) {
-            return response()->json([
-                'message' => 'Post not found'
-            ], 404);
+            return response()->json(['error' => 'User not found'], 404);
         }
-
+    
         $post->delete();
+    
+        return response()->json(['message' => 'Post deleted successfully'], 200);
 
-        return response()->json([
-            'message' => 'Post deleted successfully'
-        ]);
     }
 
 

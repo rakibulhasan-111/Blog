@@ -20,7 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/apiindex', [\App\Http\Controllers\BlogPostController::class, 'apiindex']);
 
-Route::post('apistore', [\App\Http\Controllers\BlogPostController::class, 'apistore']);
+Route::post('/apistore', [\App\Http\Controllers\BlogPostController::class, 'apistore']);
 
-Route::delete('/apidestroy/{blogPost}', [\App\Http\Controllers\BlogPostController::class, 'apidestroy']);
+Route::get('/apishow/{id}', [\App\Http\Controllers\BlogPostController::class, 'apishow']);
+
+Route::put('/apiupdate/{id}', [\App\Http\Controllers\BlogPostController::class, 'apiupdate']);
+
+Route::delete('/apidestroy/{id}', [\App\Http\Controllers\BlogPostController::class, 'apidestroy']);
 
