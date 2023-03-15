@@ -21,9 +21,10 @@ class BlogPostFactory extends Factory
     {
         return [
             //
-            'title' => $this->faker->sentence,
-            'body' => $this->faker->paragraph(30),
-            'user_id' => User::factory()
+            'title' => $this->faker->sentence, //Generates a fake sentence
+            'body' => $this->faker->paragraph(30), //generates fake 30 paragraphs
+            'image' => $this->faker->sentence,
+            'user_id' => User::factory(),
         ];
     }
 }

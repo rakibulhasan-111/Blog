@@ -23,14 +23,26 @@ class BlogPostController extends Controller
    
     public function store(Request $request)
     {
+        //dd($request->all());
         //store a new post
-        $newPost = BlogPost::create([
+        /*$newPost = BlogPost::create([
             'title' => $request->title,
             'body' => $request->body,
+            'image' => $request->image,
             'user_id' => 1
         ]);
 
-        return redirect('/blog');
+        return redirect('/blog');*/
+
+        $newPost = BlogPost::create([
+            'title' => $request->title,
+            'body' => $request->body,
+            'image'=>$request->image,
+        
+            'user_id' => 1
+        ]);
+
+        return redirect('blog/' . $newPost->id);
     }
 
     public function show(BlogPost $blogPost)
@@ -66,5 +78,104 @@ class BlogPostController extends Controller
 
         return redirect('/blog');
     }
+
+    //postman
+
+    public function apiindex()
+    {
+        // show api
+        $post = BlogPost::all();
+        return response()->json($post);
+    }
+
+    public function apistore(Request $request)
+    {
+        $existingPost = BlogPost::where('title', $request->title)
+            ->where('user_id', $request->user_id)
+            ->first();
+    
+        if ($existingPost) {
+            return response()->json([
+                'message' => 'Post already exists',
+                'data' => $existingPost
+            ], 409);  
+        }
+
+        $image = $request->file('image');
+
+        $path = $image->storeAs('public/image', $image->getClientOriginalName());
+
+        $post = BlogPost::create([
+            'title' => $request->title,
+            'body' => $request->body,
+            'image'=> $path,
+        
+            'user_id' => 1
+        ]);
+    
+        return response()->json([
+            'message' => 'Post created successfully',
+            'data' => $post
+        ]);
+    }
+
+    public function apishow(BlogPost $blogPost)
+    {
+        //show a blog post
+        $post = BlogPost::find($id);
+
+        if (!$post) {
+            return response()->json([
+                'message' => 'Post not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $post
+        ]);
+    }
+    
+    public function apiupdate(Request $request, BlogPost $blogPost)
+    {
+        $post = BlogPost::find($id);
+
+        if (!$post) {
+            return response()->json([
+                'message' => 'Post not found'
+            ], 404);
+        }
+
+        $post->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $request->image,
+            'body' => $request->body,
+            'user_id' => $request->user_id
+        ]);
+
+        return response()->json([
+            'message' => 'Post updated successfully',
+            'data' => $post
+        ]);
+    }
+
+    
+    public function apidestroy(BlogPost $blogPost)
+    {
+        $post = BlogPost::find($title);
+
+        if (!$post) {
+            return response()->json([
+                'message' => 'Post not found'
+            ], 404);
+        }
+
+        $post->delete();
+
+        return response()->json([
+            'message' => 'Post deleted successfully'
+        ]);
+    }
+
 
 }

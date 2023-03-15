@@ -20,6 +20,11 @@
                                 <input type="text" id="title" class="form-control" name="title"
                                        placeholder="Enter Post Title" required>
                             </div>
+                            <div class="control-group col-12">
+                                <label for="image">Post Image</label>
+                                <input type="file" id="image" class="form-control" name="image"
+                                       placeholder="Enter Post Image" required>
+                            </div>
                             <div class="control-group col-12 mt-2">
                                 <label for="body">Post Body</label>
                                 <textarea id="body" class="form-control" name="body" placeholder="Enter Post Body"

@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/apiindex', [\App\Http\Controllers\BlogPostController::class, 'apiindex']);
+
+Route::post('apistore', [\App\Http\Controllers\BlogPostController::class, 'apistore']);
+
+Route::delete('/apidestroy/{blogPost}', [\App\Http\Controllers\BlogPostController::class, 'apidestroy']);
+
