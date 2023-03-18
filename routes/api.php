@@ -14,9 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});*/
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
+
 
 Route::get('/apiindex', [\App\Http\Controllers\BlogPostController::class, 'apiindex']);
 
@@ -28,3 +35,4 @@ Route::put('/apiupdate/{id}', [\App\Http\Controllers\BlogPostController::class, 
 
 Route::delete('/apidestroy/{id}', [\App\Http\Controllers\BlogPostController::class, 'apidestroy']);
 
+Route::post('/user/login', [\App\Http\Controllers\LoginController::class, 'login']);

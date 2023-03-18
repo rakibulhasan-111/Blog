@@ -31,4 +31,12 @@ Route::put('/blog/{blogPost}/edit', [\App\Http\Controllers\BlogPostController::c
 
 Route::delete('/blog/{blogPost}', [\App\Http\Controllers\BlogPostController::class, 'destroy']); //deletes post from the database
 
+Route::group([
+    'as' => 'passport.',
+    'prefix' => config('passport.path', 'oauth'),
+    'namespace' => 'Laravel\Passport\Http\Controllers',
+], function () {
+    // Passport routes...
+});
+
 //Route::get('/rakib', [\App\Http\Controllers\BlogPostController::class, 'showBlog']);

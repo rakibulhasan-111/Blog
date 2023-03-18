@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
+
+
+/*$user = BlogPost::find(1);
+
+$tokenResult = $user->createToken('APP_NAME');
+
+$token = $tokenResult->accessToken;*/
+
 
 class BlogPostController extends Controller
 {
